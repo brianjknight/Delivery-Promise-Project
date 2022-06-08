@@ -1,24 +1,28 @@
 @startuml
 title DeliveringOnOurPromise Class Diagrams
 
-'class Shell{
-'    + {static final} String SHOW_FIXTURES_FLAG
-'    - {static final} String CONTINUE_PROMPT
-'    - {static final} Collection<String> VALID_YES_NO_ANSWERS
-'    - {static final} String ORDER_ID_PROMPT
-'    - {static final} String UNKNOWN_ORDER_MESSAGE
-'    - {static final} String INLINE_PROMPT
-'    -PromiseHistoryClient promiseHistoryClient
-'    -ATAUserHandler inputHandler
-'    +Shell(promiseHistoryClient : PromiseHistoryClient, userHandler : ATAUserHandler)
-'    + {static} main(args : String[]) : void
-'    handleUserRequest() : String
-'    -renderPromiseHistoryTable(promiseHistory : PromiseHistory) : String
-'    -renderOrderTable(order : Order) : String
-'    userHasAnotherRequest() : boolean
-'    -processCommandLineArgs(args : String[]) : void
-'    -renderFixtures() : String
-'}
+interface ReadOnlyDao{
+    get(orderId : I)
+}
+
+class Shell{
+    + {static final} String SHOW_FIXTURES_FLAG
+    - {static final} String CONTINUE_PROMPT
+    - {static final} Collection<String> VALID_YES_NO_ANSWERS
+    - {static final} String ORDER_ID_PROMPT
+    - {static final} String UNKNOWN_ORDER_MESSAGE
+    - {static final} String INLINE_PROMPT
+    -PromiseHistoryClient promiseHistoryClient
+    -ATAUserHandler inputHandler
+    +Shell(promiseHistoryClient : PromiseHistoryClient, userHandler : ATAUserHandler)
+    + {static} main(args : String[]) : void
+    handleUserRequest() : String
+    -renderPromiseHistoryTable(promiseHistory : PromiseHistory) : String
+    -renderOrderTable(order : Order) : String
+    userHasAnotherRequest() : boolean
+    -processCommandLineArgs(args : String[]) : void
+    -renderFixtures() : String
+}
 
 class App {
     -App();
@@ -116,16 +120,52 @@ class OrderItem{
     +toString() : String
 }
 
+class Promise{
+    -String customerOrderItemId
+    -String asin
+    -boolean active
+    -ZonedDateTime promiseEffectiveDate
+    -ZonedDateTime promiseLatestArrivalDate
+    -ZonedDateTime promiseLatestShipDate
+    -ZonedDateTime deliveryDate
+    -String promiseProvidedBy
+    -int confidence
+    -Promise()
+    + {static} builder() : Builder
+    +getPromiseLatestArrivalDate() : ZonedDateTime
+    +getCustomerOrderItemId() : String
+    +getPromiseEffectiveDate() : ZonedDateTime
+    +isActive() : boolean
+    +getPromiseLatestShipDate() : ZonedDateTime
+    +getDeliveryDate() : ZonedDateTime
+    +getPromiseProvidedBy() : String
+    +getAsin() : String
+    +getConfidence() : int
+    +setConfidence(isConfidenceTracked : boolean, trackedConfidence : int) : void
+    +setDeliveryDate(deliveryDate : ZonedDateTime) : void
+    +toString() : String
+ }
+
+class PromiseHistory{
+    -Order order;
+    -List<Promise> promises
+    +PromiseHistory(order : Order)
+    +getOrder() : Order
+    +addPromise(newPromise : Promise) : void
+    +getPromises() : List<Promise>
+}
+
+Shell -- App
 PromiseHistoryClient -- GetPromiseHistoryByOrderIdActivity
 GetPromiseHistoryByOrderIdActivity -- OrderDao
 GetPromiseHistoryByOrderIdActivity -- PromiseDao
 OrderDao -- OrderManipulationAuthorityClient
 PromiseDao -- OrderManipulationAuthorityClient
 PromiseDao -- DeliveryPromiseServiceClient
-PromiseDao -- ReadOnlyDao
-OrderDao -- ReadOnlyDao
 Order -- OrderItem
 PromiseHistory -- Promise
 PromiseHistory -- Order
+PromiseDao ..|> ReadOnlyDao
+OrderDao ..|> ReadOnlyDao
 
 @enduml
