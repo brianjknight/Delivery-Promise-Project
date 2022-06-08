@@ -155,16 +155,16 @@ class PromiseHistory{
     +getPromises() : List<Promise>
 }
 
-Shell -- App
-PromiseHistoryClient -- GetPromiseHistoryByOrderIdActivity
-GetPromiseHistoryByOrderIdActivity -- OrderDao
-GetPromiseHistoryByOrderIdActivity -- PromiseDao
-OrderDao -- OrderManipulationAuthorityClient
-PromiseDao -- OrderManipulationAuthorityClient
-PromiseDao -- DeliveryPromiseServiceClient
-Order -- OrderItem
-PromiseHistory -- Promise
-PromiseHistory -- Order
+Shell *-- App
+PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
+GetPromiseHistoryByOrderIdActivity *-- OrderDao
+GetPromiseHistoryByOrderIdActivity *-- PromiseDao
+OrderDao *-- OrderManipulationAuthorityClient
+PromiseDao *-- OrderManipulationAuthorityClient
+PromiseDao *-- DeliveryPromiseServiceClient
+Order *-- OrderItem
+PromiseHistory *-- Promise
+PromiseHistory *-- Order
 PromiseDao ..|> ReadOnlyDao
 OrderDao ..|> ReadOnlyDao
 
