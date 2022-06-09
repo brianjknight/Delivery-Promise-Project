@@ -66,6 +66,7 @@ public final class OrderDatastore {
         ensureDataPopulated();
 
         // return null if malformed
+        // FIXME - ORDER_FORMAT as shown above "\\d{3}-\\d{7}-\\d{7}"  requires 7 digits for the middle number. 111-749023(needs digit)-7630574 Conditional results in true returning null value.
         if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
             return null;
         }
