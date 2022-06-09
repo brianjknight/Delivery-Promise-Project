@@ -10,11 +10,7 @@ import java.util.Map;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class OrderDatastoreTest {
@@ -83,6 +79,14 @@ public class OrderDatastoreTest {
         // THEN
         assertNull(wrongDigitsOrderId);
     }
+
+//    @Test
+//    public void getOrderData_invalidDigitFormatId_ThrowsIllegalArgumentException() {
+//
+//        // WHEN
+//        // THEN
+//        assertThrows(IllegalArgumentException.class, () -> orderDatastore.getOrderData("111-1-999999"));
+//    }
 
     @Test
     public void getOrderData_hasAtLeastOneOrderItem() {
