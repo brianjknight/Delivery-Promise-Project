@@ -2,11 +2,7 @@ package com.amazon.ata.deliveringonourpromise.data;
 
 import com.amazon.ata.string.TextTable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 
 /**
@@ -66,8 +62,15 @@ public final class OrderDatastore {
         ensureDataPopulated();
 
         // return null if malformed
+        //FIXME should not return null. Per javadoc may return data or throw IllegalArgumentException.
+        //original code returning null:
+//        if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
+//            return null;
+//        }
+        //corrected code:
+
         if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
-            return null;
+            throw new IllegalArgumentException("OrderId cannot be null. OrderId must be well-formed 3digits-7digits-7digits. \n You entered orderId: " + orderId);
         }
 
         if (orderFixtures.containsKey(orderId)) {

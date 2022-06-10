@@ -3,18 +3,11 @@ package com.amazon.ata.deliveringonourpromise.data;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 
 public class OrderDatastoreTest {
@@ -66,22 +59,38 @@ public class OrderDatastoreTest {
         assertNotEquals(data2.getCustomerOrderItemList(), data3.getCustomerOrderItemList());
     }
 
+    //Original test for nonNumericOrderId
+//    @Test
+//    public void getOrderData_nonNumericOrderIdReturnsNull() {
+//        // WHEN
+//        OrderData nonNumericOrderIdData = orderDatastore.getOrderData("NOT ORDER ID");
+//        // THEN
+//        assertNull(nonNumericOrderIdData);
+//    }
     @Test
-    public void getOrderData_nonNumericOrderIdReturnsNull() {
+    public void getOrderData_nonNumericOrderIdReturnsNull_ThrowsIllegalArgumentException() {
         // WHEN
-        OrderData nonNumericOrderIdData = orderDatastore.getOrderData("NOT ORDER ID");
-
         // THEN
-        assertNull(nonNumericOrderIdData);
+        assertThrows(IllegalArgumentException.class, () -> orderDatastore.getOrderData("NOT ORDER ID"));
     }
 
-    @Test
-    public void getOrderData_invalidDigitFormatIdReturnsNull() {
-        // WHEN
-        OrderData wrongDigitsOrderId = orderDatastore.getOrderData("111-1-999999");
 
+    //original test for invalidDigitFormat:
+//    @Test
+//    public void getOrderData_invalidDigitFormatIdReturnsNull() {
+//        // WHEN
+//        OrderData wrongDigitsOrderId = orderDatastore.getOrderData("111-1-999999");
+//
+//        // THEN
+//        assertNull(wrongDigitsOrderId);
+//    }
+
+    @Test
+    public void getOrderData_invalidDigitFormatId_ThrowsIllegalArgumentException() {
+
+        // WHEN
         // THEN
-        assertNull(wrongDigitsOrderId);
+        assertThrows(IllegalArgumentException.class, () -> orderDatastore.getOrderData("111-1-999999"));
     }
 
     @Test
