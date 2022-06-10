@@ -69,7 +69,7 @@ public final class OrderDatastore {
 
         // FIXME - ORDER_FORMAT "\\d{3}-\\d{7}-\\d{7}" Conditional results in true returning null value if format is not correct.
         //masteryTaskOne failed: Expected Missed Promise CLI to not throw an exception!
-
+        //This is only changing the Exception that is thrown and still fails the test.
         if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
             throw new IllegalArgumentException("OrderId is not in the correct format 3digits-7digits-digits; e.g. 123-1234567-1234567. ");
         }
