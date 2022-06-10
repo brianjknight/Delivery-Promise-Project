@@ -8,6 +8,7 @@ import com.amazon.ata.deliveringonourpromise.types.PromiseHistory;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.mockito.internal.matchers.Null;
 
 import java.util.List;
 
@@ -40,6 +41,19 @@ public class GetPromiseHistoryByOrderIdActivityTest {
         // WHEN + THEN
         // (participants: we'll learn what this is doing later in the course)
         assertThrows(IllegalArgumentException.class, () -> activity.getPromiseHistoryByOrderId(orderId));
+    }
+
+    @Test
+    public void getPromiseHistoryByOrderId_invalidOrderIdFormat_returnsPromiseHistoryWithNullOrder() {
+        //GIVEN
+        String orderId = "123-123-123";
+
+        //WHEN
+        PromiseHistory history = activity.getPromiseHistoryByOrderId(orderId);
+
+        // THEN
+        assertTrue(history.getOrder() == null);
+
     }
 
     @Test
