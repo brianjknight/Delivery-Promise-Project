@@ -47,7 +47,6 @@ public class Shell {
         this.inputHandler = userHandler;
     }
 
-    // FIXME: I need some code to mess up Checkstyle. I put opening braces on their own line
     /**
      * Command Line Interface entry point. Arguments are ignored.
      *
@@ -61,8 +60,6 @@ public class Shell {
             do {
                 System.out.println(shell.handleUserRequest());
             } while (shell.userHasAnotherRequest());
-        } catch (IllegalArgumentException e) {
-            System.out.println(e.getMessage());
         } catch (Exception e) {
             System.out.println("Error encountered. Exiting.");
         }

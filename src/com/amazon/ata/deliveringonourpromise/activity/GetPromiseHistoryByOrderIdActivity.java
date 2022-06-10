@@ -41,7 +41,11 @@ public class GetPromiseHistoryByOrderIdActivity {
 
         Order order = orderDao.get(orderId);
 
-        //FIXME null pointer exception due to null order.
+        //FIXME?? null pointer exception due to null order.
+        if (order == null){
+            return new PromiseHistory(order);
+        }
+
         List<OrderItem> customerOrderItems = order.getCustomerOrderItemList();
         OrderItem customerOrderItem = null;
         if (customerOrderItems != null && !customerOrderItems.isEmpty()) {
