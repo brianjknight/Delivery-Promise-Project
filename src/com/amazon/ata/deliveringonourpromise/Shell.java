@@ -63,8 +63,7 @@ public class Shell {
             } while (shell.userHasAnotherRequest());
         } catch (IllegalArgumentException e) {
             System.out.println(e.getMessage());
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             System.out.println("Error encountered. Exiting.");
         }
 

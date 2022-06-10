@@ -62,15 +62,14 @@ public final class OrderDatastore {
         ensureDataPopulated();
 
         // return null if malformed
-        //FIXME should not return null. Per javadoc may return data or throw IllegalArgumentException.
+        //FIXME - Method should not return null. Per javadoc may return data or throw IllegalArgumentException.
         //original code returning null:
 //        if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
 //            return null;
 //        }
         //corrected code:
-
         if (null == orderId || !Pattern.matches(ORDER_FORMAT, orderId)) {
-            throw new IllegalArgumentException("OrderId cannot be null. OrderId must be well-formed 3digits-7digits-7digits. \n You entered orderId: " + orderId);
+            throw new IllegalArgumentException("OrderId must be well-formed 3digits-7digits-7digits. \n You entered orderId: " + orderId);
         }
 
         if (orderFixtures.containsKey(orderId)) {
