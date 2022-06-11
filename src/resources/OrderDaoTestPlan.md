@@ -40,6 +40,16 @@ Happy case, verifying that the OrderDao can return an order.
 ### Then
 * The result is not null
 
+### orderDao_createsNewOrderDaoObject
+Alternate case, test orderDao constructor?
+Pass OrderManipulationAuthorityClient client into the constructor
+#### Given
+*A OrderManipulationAuthorityClient object
+#### When
+1. We call OrderDao() constructor with object 
+### Then
+* Object is created with no errors.
+
 ### get_forInvalidOrderId_returnsNull
 Alternate case, invalid orderId returns null.
 
@@ -63,4 +73,41 @@ Alternate case, null input for orderId.
 
 ### Then
 * The result is null.
+
+
+### get_forEmptyString_returnsNull()
+Alternate case, "" string input for orderId returns null
+#### Given
+*orderId strings = ""
+#### When
+1. We call `get()` with the empty string
+### Then
+*Result is null.
+
+### get_forValidOrderIdNonExistingOrder_returnsNull()
+Alternate case, a valid orderId of non-existing order
+#### Given
+*orderId 900-0000000-0000000 (valid orderId but a non-existing order) 
+#### When
+1. We call `get()` with the orderId
+### Then
+*Returns null order
+
+### get_forInvalidOrderIdFormat_returnNull
+Alternate case, provide an orderId with an invalid format
+#### Given
+*orderId "90037-46401-0000001" which is a correct number but misplaced hyphen
+#### When
+1. We call `get()` with orderId in a bad format
+### Then
+*Result is null.
+
+### get_forNonNumericOrderId_returnNull
+Alternate case, provide an orderId with letters
+#### Given
+*orderId "abc-3746401-0000001" first three characters 900 replaced with abc.
+#### When
+1. We call `get()` with the non-numeric orderId.
+### Then
+*Result is null.
 
