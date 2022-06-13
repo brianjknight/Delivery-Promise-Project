@@ -306,4 +306,10 @@ public class ShellTest {
     void AFailedTest() {
         assertTrue(false);
     }
+
+    @Test
+    void TestUnknown() {
+        assertTrue(true);
+    }
+
 }
