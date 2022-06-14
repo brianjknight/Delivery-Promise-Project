@@ -31,13 +31,22 @@ import java.util.List;
  * * orderDate: the timestamp of when the order was placed
  */
 public class Order {
-    public String orderId;
-    public String customerId;
-    public String marketplaceId;
-    public OrderCondition condition;
-    public List<OrderItem> customerOrderItemList = new ArrayList<>();
-    public String shipOption;
-    public ZonedDateTime orderDate;
+//    public String orderId;
+//    public String customerId;
+//    public String marketplaceId;
+//    public OrderCondition condition;
+//    public List<OrderItem> customerOrderItemList = new ArrayList<>();
+//    public String shipOption;
+//    public ZonedDateTime orderDate;
+
+    //encapsulation:
+    private String orderId;
+    private String customerId;
+    private String marketplaceId;
+    private OrderCondition condition;
+    private List<OrderItem> customerOrderItemList = new ArrayList<>();
+    private String shipOption;
+    private ZonedDateTime orderDate;
 
     private Order() { }
 
@@ -71,7 +80,27 @@ public class Order {
      * @return a list containing all of the order items in this order
      */
     public List<OrderItem> getCustomerOrderItemList() {
-        return customerOrderItemList;
+        List<OrderItem> copyOrderItemList = new ArrayList<>();
+        for (int i = 0; i < customerOrderItemList.size(); i++) {
+            OrderItem currentItem = customerOrderItemList.get(i);
+            OrderItem copiedItem = OrderItem.builder()
+                    .withCustomerOrderItemId(currentItem.getCustomerOrderItemId())
+                    .withOrderId(currentItem.getOrderId())
+                    .withAsin(currentItem.getAsin())
+                    .withMerchantId(currentItem.getMerchantId())
+                    .withQuantity(currentItem.getQuantity())
+                    .withTitle(currentItem.getTitle())
+                    .withIsConfidenceTracked(currentItem.isConfidenceTracked())
+                    .withConfidence(currentItem.getConfidence())
+                    .build();
+
+            copyOrderItemList.add(copiedItem);
+        }
+
+        return copyOrderItemList;
+
+        //original return statement:
+//        return customerOrderItemList;
     }
 
     public String getShipOption() {

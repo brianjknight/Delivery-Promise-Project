@@ -4,6 +4,8 @@ import com.amazon.ata.deliveringonourpromise.App;
 import com.amazon.ata.deliveringonourpromise.dao.OrderDao;
 import com.amazon.ata.ordermanipulationauthority.OrderCondition;
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -12,43 +14,80 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class OrderTest {
 
+    @BeforeEach
+    //do I need to reset the App before each test?
+
+
     @Test
-    public void getCustomerOrderItemList_externallyModifyCustomerOrderItemListIndexZeroToNull_assertFalse() {
+    public void getCustomerOrderItemList_externallyModifyCustomerOrderItemListIndexZeroToNull_assertNotNull() {
         //GIVEN
         Order order = App.getOrderDao().get("111-7497023-2960775");
         List<OrderItem> customerOrderItemList = order.getCustomerOrderItemList();
 //        OrderItem initialOrderItem = order.getCustomerOrderItemList().get(0);
+//        System.out.println("TEST initialOrderItem before calling .set(): " + initialOrderItem);
 
         //WHEN
-
         customerOrderItemList.set(0, null);
         OrderItem changedOrderItem = order.getCustomerOrderItemList().get(0);
-
-//        System.out.println("initialOrderItem: " + initialOrderItem);
-//        System.out.println("changedOrderItem: " + changedOrderItem);
+//        System.out.println("TEST initialOrderItem after calling .set(): " + initialOrderItem);
+//        System.out.println("TEST orderItem order.getCustomerOrderItemList().get(0): " + changedOrderItem);
 
         //THEN
-        assertFalse(changedOrderItem == null, "CustomerOrderItemList within order variable was modified.");
+        assertNotNull(changedOrderItem, "CustomerOrderItemList externally modified calling .set() on index 0.");
     }
 
     @Test
-    public void getCondition_externallyModifyOrderCondition_assertFalse() {
+    public void getCustomerOrderItemList_externallyModifyClearAllItems_assertTrue() {
         //GIVEN
-        //111-7497023-2960775
-        //| ORDER DATE | ORDER ID | MARKETPLACE | TIMEZONE | CONDITION | SHIP OPTION | CUSTOMER ID |
-        //| 2018-07-16T15:04:11 | 111-7497023-2960775 | 1 - US | UTC | 4 - Closed | second | 375944434 |
         Order order = App.getOrderDao().get("111-7497023-2960775");
-        OrderCondition localOrderCondition = order.getCondition();
-//        System.out.println("original order condition:  " + order.getCondition());
+        List<OrderItem> customerOrderItemList = order.getCustomerOrderItemList();
+//        for (OrderItem orderItem : customerOrderItemList) {
+//            System.out.println("OrderItem: " + orderItem);
+//        }
 
         //WHEN
-        localOrderCondition = OrderCondition.CANCELLED;
-//        System.out.println("localOrderCondition: " + localOrderCondition);
-//        System.out.println("order.getCondition(): " + order.getCondition());
+        customerOrderItemList.clear();
+//        for (OrderItem orderItem : customerOrderItemList) {
+//            System.out.println("OrderItem: " + orderItem);
+//        }
 
         //THEN
-        assertFalse(order.getOrderId().equals(localOrderCondition), "OrderCondition was modified externally.");
+        assertTrue(order.getCustomerOrderItemList().size() > 0, "CustomerOrderItemList externally modified removing elements by calling .clear().");
+    }
 
+    @Test
+    public void getCustomerOrderItemList_externallyModifyAddOrderItem_assertEquals() {
+        //GIVEN
+        Order order = App.getOrderDao().get("111-7497023-2960775");
+        List<OrderItem> customerOrderItemList = order.getCustomerOrderItemList();
+        int expectedSize = customerOrderItemList.size();
+        System.out.println("expectedSize = " + expectedSize);
+
+        OrderItem otherOrderItem = App.getOrderDao().get("900-3746402-0000002").getCustomerOrderItemList().get(0);
+
+        //WHEN
+        customerOrderItemList.add(otherOrderItem);
+        int actualSize = order.getCustomerOrderItemList().size();
+        System.out.println("actualSize = " + actualSize);
+        //THEN
+        assertEquals(expectedSize, actualSize, "CustomerOrderItemList size was modified by adding an OrderItem.");
+    }
+
+    @Test
+    public void getCustomerOrderItemList_directlyAddOrderItemToOrder_assertEquals() {
+        //GIVEN
+        Order order = App.getOrderDao().get("111-7497023-2960775");
+        List<OrderItem> customerOrderItemList = order.getCustomerOrderItemList();
+        int expectedSize = customerOrderItemList.size();
+        System.out.println("expectedSize = " + expectedSize);
+        OrderItem otherOrderItem = App.getOrderDao().get("900-3746402-0000002").getCustomerOrderItemList().get(0);
+
+        //WHEN
+        order.getCustomerOrderItemList().add(otherOrderItem);
+        int actualSize = order.getCustomerOrderItemList().size();
+        System.out.println("actualSize = " + actualSize);
+        //THEN
+        assertEquals(expectedSize, actualSize, "CustomerOrderItemList size was modified by adding an OrderItem.");
     }
 
 

@@ -37,6 +37,26 @@ Alternate case, get the customerOrderItemList from an order and externally modif
 ### Then
 * The result asserts false if the customerOrderItemList in Order object was modified. 
 
+### getCustomerOrderItemList_externallyModifyClearAllItems_assertFalse()
+Alternate case, get a non-empty customerOrderItemList from an order and externally modify by removing all the OrderItems.
+#### Given
+* Create an Order object from orderId 111-7497023-2960775, then use getCustomerOrderItemList to create a local variable of type List<OrderItem> .
+#### When
+1. We use .clear() to remove all elements from the list.
+### Then
+* The result asserts false if the customerOrderItemList in Order object was cleared; the list length will be zero.  
+
+### getCustomerOrderItemList_externallyModifyAddOrderItem_assertFalse()
+Alternate case, get a non-empty customerOrderItemList from an order
+#### Given
+* Create an Order object from orderId 111-7497023-2960775, then use getCustomerOrderItemList to create a local variable of type List<OrderItem> .
+#### When
+1. We use .add() to add an OrderItem to the list.
+### Then
+* The result asserts false if the customerOrderItemList in Order object was modified. 
+
+
+
 ### getCondition_externallyModifyOrderCondition_assertFalse()
 Alternate case, Create an Order object from orderId 111-7497023-2960775 and modify its OrderCondition externally.
 #### Given
