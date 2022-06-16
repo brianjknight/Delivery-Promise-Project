@@ -72,17 +72,16 @@ public class Order {
      */
     public List<OrderItem> getCustomerOrderItemList() {
         List<OrderItem> copyOrderItemList = new ArrayList<>();
-        for (int i = 0; i < customerOrderItemList.size(); i++) {
-            OrderItem currentItem = customerOrderItemList.get(i);
+        for (OrderItem item : customerOrderItemList) {
             OrderItem copiedItem = OrderItem.builder()
-                    .withCustomerOrderItemId(currentItem.getCustomerOrderItemId())
-                    .withOrderId(currentItem.getOrderId())
-                    .withAsin(currentItem.getAsin())
-                    .withMerchantId(currentItem.getMerchantId())
-                    .withQuantity(currentItem.getQuantity())
-                    .withTitle(currentItem.getTitle())
-                    .withIsConfidenceTracked(currentItem.isConfidenceTracked())
-                    .withConfidence(currentItem.getConfidence())
+                    .withCustomerOrderItemId(item.getCustomerOrderItemId())
+                    .withOrderId(item.getOrderId())
+                    .withAsin(item.getAsin())
+                    .withMerchantId(item.getMerchantId())
+                    .withQuantity(item.getQuantity())
+                    .withTitle(item.getTitle())
+                    .withIsConfidenceTracked(item.isConfidenceTracked())
+                    .withConfidence(item.getConfidence())
                     .build();
 
             copyOrderItemList.add(copiedItem);
