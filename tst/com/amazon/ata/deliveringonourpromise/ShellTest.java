@@ -285,7 +285,7 @@ public class ShellTest {
                    "Expected result to match regex " + pattern + "result was: " + result);
     }
 
-    // FIXME: Adding some required tests for testing purposes
+    // FIX  ME: Adding some required tests for testing purposes
     @Test
     void ARequiredTest() {
         assertTrue(true);
@@ -301,7 +301,7 @@ public class ShellTest {
         assertTrue(true);
     }
 
-    // FIXME: Need a test that fails
+    // FIX  ME: Need a test that fails
     // @Test
     void AFailedTest() {
         assertTrue(false);

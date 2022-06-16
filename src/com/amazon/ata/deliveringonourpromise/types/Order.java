@@ -31,15 +31,6 @@ import java.util.List;
  * * orderDate: the timestamp of when the order was placed
  */
 public class Order {
-//    public String orderId;
-//    public String customerId;
-//    public String marketplaceId;
-//    public OrderCondition condition;
-//    public List<OrderItem> customerOrderItemList = new ArrayList<>();
-//    public String shipOption;
-//    public ZonedDateTime orderDate;
-
-    //encapsulation:
     private String orderId;
     private String customerId;
     private String marketplaceId;
@@ -98,9 +89,6 @@ public class Order {
         }
 
         return copyOrderItemList;
-
-        //original return statement:
-//        return customerOrderItemList;
     }
 
     public String getShipOption() {
@@ -166,7 +154,8 @@ public class Order {
          * @return updated Builder
          */
         public Builder withCustomerOrderItemList(List<OrderItem> customerOrderItemList) {
-            this.customerOrderItemList = customerOrderItemList;
+            List<OrderItem> copy = new ArrayList<>(customerOrderItemList);
+            this.customerOrderItemList = copy;
             return this;
         }
 
