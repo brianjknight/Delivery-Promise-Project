@@ -66,7 +66,7 @@ class OrderManipulationAuthorityClient{
 }
 
 class DeliveryPromiseServiceClient{
-    -DeliveryPromiseService dpService
+    -DeliveryPromiseService dpsService
     +DeliveryPromiseServiceClient(dpService : DeliveryPromiseService)
     +getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
 }

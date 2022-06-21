@@ -1,0 +1,47 @@
+@startuml
+
+class PromiseHistoryClient #darkgrey {
+    -GetPromiseHistoryByOrderIdActivity getPromiseHistoryByOrderIdActivity
+    +PromiseHistoryClient(getPromiseHistoryByOrderIdActivity : GetPromiseHistoryByOrderIdActivity)
+    +getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
+}
+
+class GetPromiseHistoryByOrderIdActivity #darkgrey{
+    -ReadOnlyDao orderDao
+    -ReadOnlyDao promiseDao
+    +GetPromiseHistoryByOrderIdActivity(orderDao : ReadOnlyDao, promiseDao : ReadOnlyDao)
+    +getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
+}
+
+class PromiseDao<t>{
+    -DeliveryPromiseServiceClient dpsClient
+    -OrderManipulationAuthorityClient omaClient
+    +PromiseDao(<T> promiseService, omaClient : OrderManipulationAuthorityClient)
+    +get(customerOrderItemId : String) : List<Promise>
+    -getDeliveryDateForOrderItem(customerOrderItemId : String) : ZonedDateTime
+}
+
+class OrderManipulationAuthorityClient #darkgrey{
+    -OrderManipulationAuthority omaService
+    +OrderManipulationAuthorityClient(service : OrderManipulationAuthority)
+    +getCustomerOrderByOrderId(orderId : String) : OrderResult
+    +getCustomerOrderItemByOrderItemId(orderItemId : String) : OrderResultItem
+}
+
+class DeliveryPromiseServiceClient #darkgrey{
+    -DeliveryPromiseService dpsService
+    +DeliveryPromiseServiceClient(dpService : DeliveryPromiseService)
+    +getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
+}
+
+interface ReadOnlyDao #darkgrey{
+    get(orderId : I)
+}
+
+PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
+GetPromiseHistoryByOrderIdActivity *-- PromiseDao
+PromiseDao *-- OrderManipulationAuthorityClient
+PromiseDao *-- DeliveryPromiseServiceClient
+PromiseDao ..|> ReadOnlyDao
+
+@enduml
