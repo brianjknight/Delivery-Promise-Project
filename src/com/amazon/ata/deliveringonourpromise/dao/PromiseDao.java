@@ -1,6 +1,6 @@
 package com.amazon.ata.deliveringonourpromise.dao;
 
-import com.amazon.ata.deliveringonourpromise.deliverypromiseservice.DeliveryPromiseServiceClient;
+import com.amazon.ata.deliveringonourpromise.ServiceClient;
 import com.amazon.ata.deliveringonourpromise.ordermanipulationauthority.OrderManipulationAuthorityClient;
 import com.amazon.ata.deliveringonourpromise.types.Promise;
 import com.amazon.ata.ordermanipulationauthority.OrderResult;
@@ -14,17 +14,18 @@ import java.util.List;
 /**
  * DAO implementation for Promises.
  */
-public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
-    private DeliveryPromiseServiceClient dpsClient;
+public class PromiseDao<T> implements ReadOnlyDao<String, List<Promise>> {
+    private T serviceClient;
     private OrderManipulationAuthorityClient omaClient;
 
     /**
      * PromiseDao constructor, accepting service clients for DPS and OMA.
-     * @param dpsClient DeliveryPromiseServiceClient for DAO to access DPS
+     * @param serviceClient A client for DAO to access DPS, OFS, or other service types.
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public PromiseDao(DeliveryPromiseServiceClient dpsClient, OrderManipulationAuthorityClient omaClient) {
-        this.dpsClient = dpsClient;
+    public PromiseDao(T serviceClient, OrderManipulationAuthorityClient omaClient) {
+        //FIXME "It should also use the App class to get its clients, rather than instantiating them itself. "
+        this.serviceClient = serviceClient;
         this.omaClient = omaClient;
     }
 
@@ -42,16 +43,17 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
 
         // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
         // Set delivery date
-        Promise dpsPromise = dpsClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-        if (dpsPromise != null) {
-            dpsPromise.setDeliveryDate(itemDeliveryDate);
-            promises.add(dpsPromise);
+        //FIXME get() now takes either DPS or OFS. How do I call methods not knowing what the type will be?
+        Promise promise = serviceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
+        if (promise != null) {
+            promise.setDeliveryDate(itemDeliveryDate);
+            promises.add(promise);
         }
 
         return promises;
     }
 
-    /*
+    /**
      * Fetches the delivery date of the shipment containing the order item specified by the given order item ID,
      * if there is one.
      *

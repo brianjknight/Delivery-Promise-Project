@@ -1,4 +1,5 @@
 @startuml
+title Revised PromiseDao Sub-diagram
 
 class PromiseHistoryClient #darkgrey {
     -GetPromiseHistoryByOrderIdActivity getPromiseHistoryByOrderIdActivity
@@ -13,7 +14,7 @@ class GetPromiseHistoryByOrderIdActivity #darkgrey{
     +getPromiseHistoryByOrderId(orderId : String) : PromiseHistory
 }
 
-class PromiseDao<t>{
+class PromiseDao<T>{
     -DeliveryPromiseServiceClient dpsClient
     -OrderManipulationAuthorityClient omaClient
     +PromiseDao(<T> promiseService, omaClient : OrderManipulationAuthorityClient)
@@ -29,7 +30,7 @@ class OrderManipulationAuthorityClient #darkgrey{
 }
 
 class DeliveryPromiseServiceClient #darkgrey{
-    -DeliveryPromiseService dpsService
+    -DeliveryPromiseService dpService
     +DeliveryPromiseServiceClient(dpService : DeliveryPromiseService)
     +getDeliveryPromiseByOrderItemId(customerOrderItemId : String) : Promise
 }
@@ -38,10 +39,17 @@ interface ReadOnlyDao #darkgrey{
     get(orderId : I)
 }
 
+class OrderFulfillmentServiceClient{
+    -OrderFulfillmentService opService
+    +OrderFulfillmentServiceClient(opService : OrderFulfillmentService
+    +getOrderPromiseByOrderItemId(customerOrderItemId : String) : Promise
+}
+
 PromiseHistoryClient *-- GetPromiseHistoryByOrderIdActivity
 GetPromiseHistoryByOrderIdActivity *-- PromiseDao
 PromiseDao *-- OrderManipulationAuthorityClient
 PromiseDao *-- DeliveryPromiseServiceClient
+PromiseDao *-- OrderFulfillmentServiceClient
 PromiseDao ..|> ReadOnlyDao
 
 @enduml

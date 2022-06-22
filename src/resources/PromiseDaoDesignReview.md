@@ -41,11 +41,13 @@ You can leave out classes that don't participate in the new solution, but you sh
 
 In detail, what calls will the software make, and how will it process the results? You may use a single narrative, but it should satisfy all of the use cases you described above.
 
+- This will be very similar to DPSclient, however Promise history depends on the order having a ship date.
+- resources/RevisedPromisedDao.puml
+![img_1.png](img_1.png)
 - 
-
 What do you expect the complexity (BigO) of this solution to be, and why? Clearly define the variable(s) you're using in your BigO notation.
 
-- 
+- PromiseDao is O(1). The get() method returns a list of Promises for a single item. The item will only have a DeliveryPromise or OrderPromise so it will not grow linearly.  
 
 ## Potential Issues
 

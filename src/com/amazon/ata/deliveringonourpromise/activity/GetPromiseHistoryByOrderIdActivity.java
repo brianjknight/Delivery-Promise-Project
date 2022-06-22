@@ -42,7 +42,6 @@ public class GetPromiseHistoryByOrderIdActivity {
         Order order = orderDao.get(orderId);
 
         //FIX  ME order.getCustomerOrderItemList() causes nullPointerException if orderId is not found.
-        //Use tyr/catch blocks?
         //Use conditional if (order == null)
         if (order == null) {
             return new PromiseHistory(null);
