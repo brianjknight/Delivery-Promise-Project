@@ -12,6 +12,9 @@ import com.amazon.ata.deliverypromiseservice.service.DeliveryPromiseService;
 import com.amazon.ata.orderfulfillmentservice.OrderFulfillmentService;
 import com.amazon.ata.ordermanipulationauthority.OrderManipulationAuthority;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Provides inversion of control for the DeliveringOnOurPromise project by instantiating all of the
  * dependencies needed by the Shell and its dependency classes.
@@ -38,10 +41,16 @@ public class App {
     public static OrderDao getOrderDao() {
         return new OrderDao(getOrderManipulationAuthorityClient());
     }
+
+    /**
+     * Fetch PromiseDao with dependencies for the shell.
+     * @return PromiseDao with a list of ServiceClient objects and an OMAClient.
+     */
     public static PromiseDao getPromiseDao() {
-        return new PromiseDao(getDeliveryPromiseServiceClient(), getOrderFulfillmentServiceClient(),
-                              getOrderManipulationAuthorityClient()
-        );
+        List<ServiceClient> serviceClients = new ArrayList<>();
+        serviceClients.add(getDeliveryPromiseServiceClient());
+        serviceClients.add(getOrderFulfillmentServiceClient());
+        return new PromiseDao(serviceClients, getOrderManipulationAuthorityClient());
     }
 
     // service clients

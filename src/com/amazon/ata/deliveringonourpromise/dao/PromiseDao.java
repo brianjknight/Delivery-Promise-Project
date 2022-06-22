@@ -15,19 +15,17 @@ import java.util.List;
  * DAO implementation for Promises.
  */
 public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
-    private ServiceClient serviceClient;
-    private ServiceClient secondServiceClient;
+    private List<ServiceClient> serviceClients;
     private OrderManipulationAuthorityClient omaClient;
 
     /**
      * PromiseDao constructor, accepting service clients for DPS and OMA.
-     * @param serviceClient A client for DAO to access DPS, OFS, or other service types.
+     * @param serviceClients A list of clients for DAO to access DPS, OFS, or other service types.
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public PromiseDao(ServiceClient serviceClient, ServiceClient secondServiceClient, OrderManipulationAuthorityClient omaClient) {
+    public PromiseDao(List<ServiceClient> serviceClients, OrderManipulationAuthorityClient omaClient) {
         //FIXME "It should also use the App class to get its clients, rather than instantiating them itself. "
-        this.serviceClient = serviceClient;
-        this.secondServiceClient = secondServiceClient;
+        this.serviceClients = serviceClients;
         this.omaClient = omaClient;
     }
 
@@ -45,17 +43,12 @@ public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
 
         // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
         // Set delivery date
-        Promise firstPromise = serviceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-        if (firstPromise != null) {
-            firstPromise.setDeliveryDate(itemDeliveryDate);
-            promises.add(firstPromise);
-        }
-        // fetch Promise from Order Promise Service. If exists, add to list of Promises to return.
-        // Set delivery date
-        Promise secondPromise = secondServiceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-        if (secondPromise != null) {
-            secondPromise.setDeliveryDate(itemDeliveryDate);
-            promises.add(secondPromise);
+        for (ServiceClient sc : serviceClients) {
+            Promise promise = sc.getDeliveryPromiseByOrderItemId(customerOrderItemId);
+            if (promise != null) {
+                promise.setDeliveryDate(itemDeliveryDate);
+                promises.add(promise);
+            }
         }
 
         return promises;
