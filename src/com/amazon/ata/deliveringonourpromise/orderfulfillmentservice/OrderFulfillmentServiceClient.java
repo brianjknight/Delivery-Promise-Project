@@ -9,7 +9,7 @@ import com.amazon.ata.orderfulfillmentservice.OrderPromise;
  * Client for accessing the OrderFulfillmentService to retrieve Promises.
  */
 
-public class OrderFulfillmentServiceClient {
+public class OrderFulfillmentServiceClient implements ServiceClient {
     private OrderFulfillmentService opService;
 
     /**

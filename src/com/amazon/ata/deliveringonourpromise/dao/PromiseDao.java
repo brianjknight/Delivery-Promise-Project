@@ -14,8 +14,9 @@ import java.util.List;
 /**
  * DAO implementation for Promises.
  */
-public class PromiseDao<T> implements ReadOnlyDao<String, List<Promise>> {
-    private T serviceClient;
+public class PromiseDao implements ReadOnlyDao<String, List<Promise>> {
+    private ServiceClient serviceClient;
+    private ServiceClient secondServiceClient;
     private OrderManipulationAuthorityClient omaClient;
 
     /**
@@ -23,9 +24,10 @@ public class PromiseDao<T> implements ReadOnlyDao<String, List<Promise>> {
      * @param serviceClient A client for DAO to access DPS, OFS, or other service types.
      * @param omaClient OrderManipulationAuthorityClient for DAO to access OMA
      */
-    public PromiseDao(T serviceClient, OrderManipulationAuthorityClient omaClient) {
+    public PromiseDao(ServiceClient serviceClient, ServiceClient secondServiceClient, OrderManipulationAuthorityClient omaClient) {
         //FIXME "It should also use the App class to get its clients, rather than instantiating them itself. "
         this.serviceClient = serviceClient;
+        this.secondServiceClient = secondServiceClient;
         this.omaClient = omaClient;
     }
 
@@ -43,11 +45,17 @@ public class PromiseDao<T> implements ReadOnlyDao<String, List<Promise>> {
 
         // fetch Promise from Delivery Promise Service. If exists, add to list of Promises to return.
         // Set delivery date
-        //FIXME get() now takes either DPS or OFS. How do I call methods not knowing what the type will be?
-        Promise promise = serviceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
-        if (promise != null) {
-            promise.setDeliveryDate(itemDeliveryDate);
-            promises.add(promise);
+        Promise firstPromise = serviceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
+        if (firstPromise != null) {
+            firstPromise.setDeliveryDate(itemDeliveryDate);
+            promises.add(firstPromise);
+        }
+        // fetch Promise from Order Promise Service. If exists, add to list of Promises to return.
+        // Set delivery date
+        Promise secondPromise = secondServiceClient.getDeliveryPromiseByOrderItemId(customerOrderItemId);
+        if (secondPromise != null) {
+            secondPromise.setDeliveryDate(itemDeliveryDate);
+            promises.add(secondPromise);
         }
 
         return promises;
