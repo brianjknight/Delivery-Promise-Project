@@ -6,6 +6,9 @@ import java.io.Serializable;
 import java.util.Comparator;
 
 public class PromiseAsinComparator implements Comparator<Promise>, Serializable {
+
+    private static final long serialVersionUID = 1L;
+
     @Override
     public int compare(Promise promise1, Promise promise2) {
         if (promise1.getAsin() != null && promise2.getAsin() == null) {
