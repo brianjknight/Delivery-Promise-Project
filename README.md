@@ -1,3 +1,16 @@
 # ebd-unit2-sprint1-challenge-DeliveringOnOurPromises
 
-This repository contains the initial application for the Sprint Challenges for the EBD Unit 2. All information and instructions for using this repo can be found in Canvas in your EBD Unit 2 Sprint 1 Course. If you do not have access to that course, you do not need this repository!
+This repo is a project tracking initial delivery date promises, modified dates, and actual delivery dates of an order fullfilment service. It covers conepts learned in Unit 2 of BloomTech including the following:
+
+Writing and Testing Functional Requirements
+Debugging
+Unit Testing
+Memory
+Encapsulation
+Polymorphism and Interfaces
+Primitive Wrapper Classes
+Using a Generic Type
+Lists
+Big O Part A
+Comparable
+Comparators and Using sort()
