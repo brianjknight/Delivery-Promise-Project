@@ -2,9 +2,9 @@
 
 This repo is a project tracking initial delivery date promises, modified dates, and actual delivery dates of an order fullfilment service. It covers conepts learned in Unit 2 of BloomTech including the following:
 
-Writing and Testing Functional Requirements
-Debugging
-Unit Testing
+Writing and Testing Functional Requirements <\br>
+Debugging<\br>
+Unit Testing<\br>
 Memory
 Encapsulation
 Polymorphism and Interfaces
